@@ -39,6 +39,6 @@ build-deb:
 	rm -v ./debian/DEBIAN/md5sums.bak
 	cp -rv debdata/. debian/DEBIAN/
 	dpkg-deb --build debian
-	cp -v debian.deb distro-upgrade.deb
+	cp -v debian.deb distro-upgrade_UNSTABLE.deb
 	rm -v debian.deb
 	rm -rv debian
