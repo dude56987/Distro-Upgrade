@@ -1,0 +1,10 @@
+Package: distro-upgrade
+Version: 0.1
+Section: admin
+Maintainer: Carl J Smith <feedback@hacker-haven.com>
+Installed-Size: 20
+Priority: optional
+Architecture: all
+Depends: python (>=2.7)
+Description: Upgrades distro by getting the latest repos.
+ USE THIS PROGRAM AT YOUR OWN RISK!!! A FRESH INSTALL IS ALWAYS BETTER THAN THIS METHOD! The program will attempt to figure out the latest distro using distrowatch.com, then it will switch the old repos to the new ones. This version is only tested to work on distros that use Ubuntu repos and Linux Mint repos.

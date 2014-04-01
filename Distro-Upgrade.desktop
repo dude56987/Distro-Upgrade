@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Type=Application
+Exec=gksu "xterm -T Distro-Upgrade -e distro-upgrade;read;exit;"
+Name=Distro Upgrade
+Comment=Upgrades the package repos to latest, then updates the system.
+Categories=XFCE;GTK;Settings;DesktopSettings;X-XFCE-SettingsDialog;X-XFCE-SystemSettings;
+OnlyShowIn=XFCE;
+GenericName=Distro Upgrade
+Icon=package-upgrade
