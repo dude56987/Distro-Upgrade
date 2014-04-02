@@ -11,8 +11,6 @@ install:
 uninstall:
 	sudo rm /usr/bin/distro-upgrade
 	sudo rm /etc/cron.monthly/distro-upgrade
-installed-size:
-	du -sx --exclude DEBIAN ./debian/
 build: 
 	sudo make build-deb;
 build-deb:
@@ -38,6 +36,7 @@ build-deb:
 	sed -i.bak 's/\.\/debian\///g' ./debian/DEBIAN/md5sums
 	rm -v ./debian/DEBIAN/md5sums.bak
 	cp -rv debdata/. debian/DEBIAN/
+	chmod -Rv go+r debian/
 	dpkg-deb --build debian
 	cp -v debian.deb distro-upgrade_UNSTABLE.deb
 	rm -v debian.deb
