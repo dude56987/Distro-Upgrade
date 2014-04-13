@@ -23,6 +23,11 @@ from time import sleep
 #      * LTS ask if you want to stay on the LTS unless their is a new 
 #        LTS release out to upgrade to then the upgrade informs the user
 #        a new LTS it out and asks to upgrade to it
+#      * Add a system in which the program pings all new repos to verify
+#        they exist. Then if none of them work show error and dont 
+#        preform the update. Also weigh the option of asking the user if
+#        they would like to keep old repo versions if new ones dont work
+#        , not on a wholistic basis but for each broken repo.
 ########################################################################
 # ABOUT:
 #       Program currently grabs Ubuntu, mint, and Debian distrowatch 

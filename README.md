@@ -7,3 +7,6 @@ Upgrade Linux Mint and Ubuntu repos to the latest version.
 
 The program will attempt to figure out the latest distro using distrowatch.com, then it will switch the old repos to the new ones. This version is only tested to work on distros that use Ubuntu repos and Linux Mint repos.
 
+####Unstable Package
+Ubuntu/Linux Mint Package<br>
+https://github.com/dude56987/Distro-Upgrade/blob/master/distro-upgrade_UNSTABLE.deb?raw=true
