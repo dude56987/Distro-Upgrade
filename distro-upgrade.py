@@ -28,6 +28,9 @@ from time import sleep
 #        preform the update. Also weigh the option of asking the user if
 #        they would like to keep old repo versions if new ones dont work
 #        , not on a wholistic basis but for each broken repo.
+#      * Once a month set a cron job to check if a distro upgrade is 
+#        available, if so notify the user using the same method as the
+#        reboot-required program. Only tell them to run distro-upgrade.
 ########################################################################
 # ABOUT:
 #       Program currently grabs Ubuntu, mint, and Debian distrowatch 
