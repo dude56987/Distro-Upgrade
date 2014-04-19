@@ -170,7 +170,10 @@ if temp == 'y':# if user answers yes proceed otherwise exit
 else:
 	print 'Program will now exit, Nothing will be changed'
 	exit()
-countdown = 30
+if ('--force-yes' in sys.argv):
+	countdown = 0
+else:
+	countdown = 30
 for i in range(countdown):
 	print (str(countdown-i) +' Seconds till the upgrade starts! Hit <CONTROL>+C to cancel!  ')
 	sleep(1)
