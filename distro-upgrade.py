@@ -149,6 +149,13 @@ distros.append(updateSources('http://distrowatch.com/table.php?distribution=mint
 distros.append(updateSources('http://distrowatch.com/table.php?distribution=ubuntu'))
 distros.append(updateSources('http://distrowatch.com/table.php?distribution=debian'))
 # print the distros that will be updated
+if '-l' in sys.argv or '--list' in sys.argv:
+	for item in distros:
+		# if list is invoked list all distro versions and end the program
+		print ('#'*6)+' '+(item.distroUrl.split('=')[1])+' '+('#'*6)
+		for version in item.versions:
+			print version[0]+' '+version[1]
+	exit()
 print ('The following distro sources will be updated:')
 for item in distros:
 	print (greentext+item.distroUrl.split('=')[1] +' '+ item.newestVersion[0] +' '+ item.newestVersion[1]+resetTextStyle)
