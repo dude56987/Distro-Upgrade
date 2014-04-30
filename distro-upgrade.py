@@ -31,6 +31,15 @@ from time import sleep
 #      * Once a month set a cron job to check if a distro upgrade is 
 #        available, if so notify the user using the same method as the
 #        reboot-required program. Only tell them to run distro-upgrade.
+#      * When program check distro and checks if mint can be updated it
+#        will only work on the newest versions of the distros this
+#        the program needs setup so that it will work with older 
+#        versions too. 
+#      * Add a --force -f option that skips the distro check stuff
+#      * Add a --help option so the user can figure out how to use this
+#        program.
+#      * Clean up this pile of code so its not a hellhole of maintence 
+#        in the future.
 ########################################################################
 # ABOUT:
 #       Program currently grabs Ubuntu, mint, and Debian distrowatch 
@@ -63,6 +72,25 @@ magentabackground= '\033[45m'
 cyanbackground= '\033[46m'
 whitebackground= '\033[47m'
 ########################################################################
+def loadFile(fileName):
+	try:
+		fileObject=open(fileName,'r');
+	except:
+		print "Failed to load :",fileName
+		return False
+	fileText=''
+	lineCount = 0
+	for line in fileObject:
+		if line[:1] != '#':
+			fileText += line
+		lineCount += 1
+	fileObject.close()
+	if fileText == None:
+		return False
+	else:
+		return fileText
+	#if somehow everything fails return false
+	return False
 class updateSources:
 	def __init__(self,distrowatchPage):
 		self.distroUrl = distrowatchPage
@@ -108,11 +136,22 @@ class updateSources:
 		# class variable
 		self.versions = versions = temp
 		temp = ''
+		self.versions =list(reversed(self.versions))
+		# add a number to each version
+		temp = []
+		counter = 0
+		for item in self.versions:
+			item.append(counter)
+			temp.append(item)
+			counter +=1
+		self.versions = temp
+		temp = ''
+		# set and search for newest version
 		self.newestVersion = self.versions[0]
 		for item in self.versions:
 			if float(item[0]) > float(self.newestVersion[0]):
 				self.newestVersion = item
-		#~ print newestVersion
+		#print 'Newest version =',newestVersion
 	def changeSources(self):
 		for item in self.versions:
 			os.system("sed -i.bak 's/"+item[1]+"/"+self.newestVersion[1]+"/g' /etc/apt/sources.list")
@@ -141,14 +180,36 @@ if os.geteuid() != 0:
 	print 'This program will upgrade the system for all users!'
 	exit()
 ########################################################################
+# what distro is this, load the files
+sourcesText = ''
+temp = loadFile('/etc/apt/sources.list')
+if temp != False:
+	sourcesText += temp
+for files in os.listdir('/etc/apt/sources.list.d/'):
+	temp = loadFile('/etc/apt/sources.list.d/'+files)
+	if temp != False:
+		sourcesText += temp
 # check for mint then check for ubuntu, latter add other distros like zandros or something
 # check for mint sources
 distros = []
+# linux mint sources
 distros.append(updateSources('http://distrowatch.com/table.php?distribution=mint'))
 # check for ubuntu sources
 distros.append(updateSources('http://distrowatch.com/table.php?distribution=ubuntu'))
+# debian sources
 distros.append(updateSources('http://distrowatch.com/table.php?distribution=debian'))
 # print the distros that will be updated
+currentDistro = ''
+if  sourcesText.find(distros[0].newestVersion[1]) != -1:
+	print 'You are using Linux Mint'
+	currentDistro = 'Linux Mint'
+elif  sourcesText.find(distros[1].newestVersion[1]) != -1:
+	print 'You are using Ubuntu Linux'
+	currentDistro = 'Ubuntu Linux'
+elif sourcesText.find(distros[2].newestVersion[1]) != -1:
+	print 'You are using Debian Linux'
+	currentDistro = 'Debian Linux'
+# lists of versions of distros
 if '-l' in sys.argv or '--list' in sys.argv:
 	for item in distros:
 		# if list is invoked list all distro versions and end the program
@@ -156,11 +217,16 @@ if '-l' in sys.argv or '--list' in sys.argv:
 		for version in item.versions:
 			print version[0]+' '+version[1]
 	exit()
-print ('The following distro sources will be updated:')
-for item in distros:
-	print (greentext+item.distroUrl.split('=')[1] +' '+ item.newestVersion[0] +' '+ item.newestVersion[1]+resetTextStyle)
+# check for mint if ubuntu versions and mint versions are compatable
+if currentDistro == 'Linux Mint':
+	if distros[1].newestVersion[2]-distros[0].newestVersion[2] != 1:
+		print (redtext+'WARNING: Mint is currently not up to date with the current ubuntu packages, an upgrade now would break your system. Please wait untill a new mint is out to upgrade.'+resetTextStyle)
+		print 'Program will now exit...'
+		exit()
+print ('The following distro will be updated:')
+print (greentext+currentDistro+resetTextStyle)
 # query the user before the upgrade
-print ('Would you like to upgrade the distro to use the above repos?')
+print ('Would you like to upgrade the distro above?')
 print (yellowtext+'NOTE: You should not make any changes to your computer while this is runnning!'+resetTextStyle)
 if '-r' in sys.argv:# if reboot will happen at end up upgrade
 	print (yellowtext+'NOTE: When the upgrade is complete your computer will reboot without warning!'+resetTextStyle)
