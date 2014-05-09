@@ -220,7 +220,7 @@ if '-l' in sys.argv or '--list' in sys.argv:
 # check for mint if ubuntu versions and mint versions are compatable
 if currentDistro == 'Linux Mint':
 	if distros[1].newestVersion[2]-distros[0].newestVersion[2] != 1:
-		print (redtext+'WARNING: Mint is currently not up to date with the current ubuntu packages, an upgrade now would break your system. Please wait untill a new mint is out to upgrade.'+resetTextStyle)
+		print (redtext+'WARNING: Mint is currently not up to date with the current ubuntu packages, an upgrade now would break your system. Please wait until a new mint is out to upgrade.'+resetTextStyle)
 		print 'Program will now exit...'
 		exit()
 print ('The following distro will be updated:')
