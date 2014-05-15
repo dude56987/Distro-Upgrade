@@ -149,8 +149,9 @@ class updateSources:
 		# set and search for newest version
 		self.newestVersion = self.versions[0]
 		for item in self.versions:
-			if float(item[0]) > float(self.newestVersion[0]):
-				self.newestVersion = item
+			if item[0].find('rc') == -1: # dont count relese canadates
+				if float(item[0]) > float(self.newestVersion[0]):
+					self.newestVersion = item
 		#print 'Newest version =',newestVersion
 	def changeSources(self):
 		for item in self.versions:
